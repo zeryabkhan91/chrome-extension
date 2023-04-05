@@ -1,0 +1,14 @@
+{
+  "name": "User Authentication Extension",
+  "description": "Secrete key user authentication chrome extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "User Authentication Extension",
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "logo192.png",
+      "128": "logo192.png"
+    }
+  }
+}
