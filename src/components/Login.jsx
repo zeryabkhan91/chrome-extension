@@ -13,8 +13,13 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import {
+  resetExtension,
+  selectExtension,
+} from "../redux/extension/extensionSlice";
 
 const styles = {
   loginPage: {
@@ -90,8 +95,10 @@ const styles = {
 };
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dataDispatcher = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const extensionInfo = useSelector(selectExtension);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const [messege, setMessege] = useState(false);
@@ -105,9 +112,9 @@ const Login = () => {
 
   const onSubmit = async ({ password, secreteKey }, { setSubmitting }) => {
     const authorizedKey =
-      atob(localStorage["secreteKey"]) === secreteKey ? true : false;
+      atob(extensionInfo.secreteKey) === secreteKey ? true : false;
 
-    if (!(localStorage["password"] === password) || !authorizedKey) {
+    if (!(extensionInfo.password === password) || !authorizedKey) {
       handleMessege();
       setSubmitting(false);
     } else {
@@ -115,10 +122,8 @@ const Login = () => {
     }
   };
 
-  const handleResetApplication = () => {
-    localStorage.setItem("initialize", false);
-    localStorage.setItem("password", "");
-    localStorage.setItem("secreteKey", "");
+  const handleResetApplication = async () => {
+    dataDispatcher(resetExtension());
     navigate("/");
   };
 

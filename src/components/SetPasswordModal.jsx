@@ -17,6 +17,11 @@ import * as Yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { passwordRegex } from "../helpers/regex";
+import {
+  setIsInitialized,
+  setPassword,
+} from "../redux/extension/extensionSlice";
+import { useDispatch } from "react-redux";
 
 const styles = {
   errorMessages: {
@@ -58,6 +63,7 @@ const styles = {
 };
 
 const SetPasswordModal = (props) => {
+  const dataDispatcher = useDispatch();
   const { open, handleClose } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -65,8 +71,8 @@ const SetPasswordModal = (props) => {
 
   const onSubmit = async ({ password }, { setSubmitting }) => {
     try {
-      localStorage.setItem("password", password);
-      localStorage.setItem("initialize", true);
+      dataDispatcher(setPassword(password));
+      dataDispatcher(setIsInitialized(true));
       setSubmitting(false);
       await handleClose();
     } catch (err) {

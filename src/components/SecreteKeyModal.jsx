@@ -1,5 +1,7 @@
 import { Button, Dialog, DialogTitle } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSecreteKey } from "../redux/extension/extensionSlice";
 
 const styles = {
   DialogHeader: {
@@ -53,6 +55,7 @@ const styles = {
 };
 
 const SecreteKeyModal = (props) => {
+  const dataDispatcher = useDispatch();
   const { open, handleClose, type, openSetPassword } = props;
   const [secrete, setSecrete] = useState("");
   const [messege, setMessege] = useState(false);
@@ -98,7 +101,7 @@ const SecreteKeyModal = (props) => {
   const handleNext = async () => {
     handleCopyToClipboard();
     const encryptedKey = btoa(secrete);
-    localStorage.setItem("secreteKey", encryptedKey);
+    dataDispatcher(setSecreteKey(encryptedKey));
     handleClose();
     if (isNewProcess) {
       openSetPassword();

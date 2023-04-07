@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectExtension } from "../redux/extension/extensionSlice";
 import SecreteKeyModal from "./SecreteKeyModal";
 
 const styles = {
@@ -67,6 +69,7 @@ const styles = {
 const Home = () => {
   const [openSecreteKeyModal, setOpenSecreteKeyModal] = useState(false);
   const [messege, setMessege] = useState(false);
+  const extensionInfo = useSelector(selectExtension);
   const navigate = useNavigate();
 
   const handleCloseSecreteKeyModal = () => {
@@ -94,7 +97,7 @@ const Home = () => {
             justifyContent: "space-between",
           }}
         >
-          <Typography sx={styles.signInTypo}>{"Home Page"}</Typography>
+          <Typography sx={styles.signInTypo}>{"Home"}</Typography>
           <Button
             type="submit"
             variant="contained"
@@ -109,7 +112,7 @@ const Home = () => {
         ) : null}
         <p style={styles.typography}>
           Secrete Key:{" "}
-          <span style={styles.key}>{atob(localStorage["secreteKey"])}</span>
+          <span style={styles.key}>{atob(extensionInfo.secreteKey)}</span>
         </p>
         <p style={styles.description}>
           Note: Here is your secrete key keep it secure.

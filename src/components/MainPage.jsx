@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectExtension } from "../redux/extension/extensionSlice";
 import SecreteKeyModal from "./SecreteKeyModal";
 import SetPasswordModal from "./SetPasswordModal";
 
 const MainPage = () => {
+  const extensionInfo = useSelector(selectExtension);
   const [openSecreteKeyModal, setOpenSecreteKeyModal] = useState(false);
   const [openSetPasswordModal, setOpenSetPasswordModal] = useState(false);
   const [isInitialize, setIsInitialize] = useState(true);
@@ -23,10 +26,9 @@ const MainPage = () => {
 
   useEffect(() => {
     if (
-      localStorage &&
-      localStorage.getItem("initialize") &&
-      localStorage.getItem("password") &&
-      localStorage.getItem("secreteKey") &&
+      extensionInfo.isInitialized &&
+      extensionInfo.secreteKey &&
+      extensionInfo.password &&
       !(window.location.pathname === "/login")
     ) {
       navigate("/login");
@@ -36,7 +38,7 @@ const MainPage = () => {
         setIsInitialize(false);
       }
     }
-  }, [handleCloseSetPasswordModal]);
+  }, [extensionInfo, navigate]);
 
   return (
     <>
